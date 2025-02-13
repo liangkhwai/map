@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  api:
+  geo-map:
     build:
       context: ./geo-map
       dockerfile: Dockerfile
@@ -15,17 +15,17 @@ services:
     volumes:
       - ./geo-map:/usr/src/app
 
-  client:
+  oneconnect:
     build:
-      context: ./client
+      context: ./oneconnect
       dockerfile: Dockerfile
-    container_name: react-client
+    container_name: oneconnect
     ports:
       - '5173:5173'
     environment:
       - NODE_ENV=production
     volumes:
-      - ./client:/app
+      - ./oneconnect:/app
     command: npm run preview -- --host 0.0.0.0
 
   mongodb:
