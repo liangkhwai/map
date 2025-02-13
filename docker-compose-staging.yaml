@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: ./geo-map
+      dockerfile: Dockerfile
+    container_name: geo-map-api
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://root:example@mongodb:27017/geo-map?authSource=admin
+    depends_on:
+      - mongodb
+    volumes:
+      - ./geo-map:/usr/src/app
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: react-client
+    ports:
+      - '5173:5173'
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./client:/app
+    command: npm run preview -- --host 0.0.0.0
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=geo-map
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
