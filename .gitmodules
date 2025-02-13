@@ -1,0 +1,6 @@
+[submodule "geo-map"]
+	path = geo-map
+	url = https://github.com/liangkhwai/geo-map
+[submodule "oneconnect"]
+	path = oneconnect
+	url = https://github.com/ikople24/oneconnect
