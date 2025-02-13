@@ -2,7 +2,7 @@ version: '3.8'
 services:
   geo-map:
     build:
-      context: ./geo-map
+      context: ./geo-map  # Point to the geo-map directory
       dockerfile: Dockerfile
     container_name: geo-map-api
     ports:
@@ -13,11 +13,11 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - ./geo-map:/usr/src/app
+      - ./geo-map:/usr/src/app  # Mount geo-map source code directory
 
   oneconnect:
     build:
-      context: ./oneconnect
+      context: ./oneconnect  # Point to the oneconnect directory
       dockerfile: Dockerfile
     container_name: oneconnect
     ports:
@@ -25,8 +25,8 @@ services:
     environment:
       - NODE_ENV=production
     volumes:
-      - ./oneconnect:/app
-    command: npm run preview -- --host 0.0.0.0
+      - ./oneconnect:/app  # Mount oneconnect source code directory
+    command: npm run preview -- --host 0.0.0.0  # Use NPM to run the preview server
 
   mongodb:
     image: mongo:6.0
@@ -38,7 +38,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=example
       - MONGO_INITDB_DATABASE=geo-map
     volumes:
-      - mongo-data:/data/db
+      - mongo-data:/data/db  # Persist MongoDB data
 
 volumes:
   mongo-data:
