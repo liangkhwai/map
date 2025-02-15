@@ -25,9 +25,9 @@ services:
         - VITE_API_BASE_URL=http://localhost:3000
     container_name: oneconnect
     ports:
-      - "80:80"
+      - "5173:80"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=staging
     depends_on:
       - geo-map
         # command: npm run preview -- --host 0.0.0.0  # Use NPM to run the preview server
