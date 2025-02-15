@@ -14,6 +14,7 @@ services:
       - mongodb
     volumes:
       - ./geo-map:/usr/src/app  # Mount geo-map source code directory
+    restart: always  # Ensure the service restarts if it fails
 
   oneconnect:
     build:
@@ -24,9 +25,8 @@ services:
       - '5173:5173'
     environment:
       - NODE_ENV=production
-    volumes:
-      - ./oneconnect:/app  # Mount oneconnect source code directory
     command: npm run preview -- --host 0.0.0.0  # Use NPM to run the preview server
+    restart: always  # Ensure the service restarts if it fails
 
   mongodb:
     image: mongo:6.0
@@ -39,6 +39,7 @@ services:
       - MONGO_INITDB_DATABASE=geo-map
     volumes:
       - mongo-data:/data/db  # Persist MongoDB data
+    restart: always  # Ensure MongoDB restarts on failure
 
 volumes:
   mongo-data:
