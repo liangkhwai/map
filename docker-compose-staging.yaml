@@ -22,12 +22,12 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_CLERK_PUBLISHABLE_KEY=pk_test_Y29taWMtZm94LTExLmNsZXJrLmFjY291bnRzLmRldiQ
-        - VITE_API_BASE_URL=http://localhost:3000
+        - VITE_API_BASE_URL=http://171.100.178.58:3000
     container_name: oneconnect
     ports:
-      - "5173:80"
+      - "80:80"
     environment:
-      - NODE_ENV=staging
+      - NODE_ENV=production
     depends_on:
       - geo-map
         # command: npm run preview -- --host 0.0.0.0  # Use NPM to run the preview server
