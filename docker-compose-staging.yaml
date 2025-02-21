@@ -1,12 +1,14 @@
-version: "3.8"
+networks:
+  oneconnect_network:
+    driver: bridge
 services:
   geo-map:
     build:
       context: ./geo-map # Point to the geo-map directory
       dockerfile: Dockerfile
     container_name: geo-map-api
-    ports:
-      - "3000:3000"
+      #ports:
+      #- "3000:3000"
     environment:
       - NODE_ENV=production
       - MONGO_URI=mongodb://root:example@mongodb:27017/geo-map?authSource=admin
@@ -14,6 +16,8 @@ services:
       - mongodb
     # volumes:
     #   - ./geo-map:/usr/src/app  # Mount geo-map source code directory
+    networks:
+      - oneconnect_network
     restart: always # Ensure the service restarts if it fails
 
   oneconnect:
@@ -22,16 +26,22 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_CLERK_PUBLISHABLE_KEY=pk_test_Y29taWMtZm94LTExLmNsZXJrLmFjY291bnRzLmRldiQ
-        - VITE_API_BASE_URL=http://171.100.178.58:3000
+        - VITE_API_BASE_URL=/api
     container_name: oneconnect
     ports:
       - "80:80"
+      - "443:443"
+        #- "3000:3000"
     environment:
       - NODE_ENV=production
     depends_on:
       - geo-map
         # command: npm run preview -- --host 0.0.0.0  # Use NPM to run the preview server
+    networks: 
+      - oneconnect_network 
     restart: always # Ensure the service restarts if it fails
+      #volumes:
+      #- ./oneconnect/ssl:/etc/nginx/ssl
 
   mongodb:
     image: mongo:6.0
@@ -44,6 +54,8 @@ services:
       - MONGO_INITDB_DATABASE=geo-map
     volumes:
       - mongo-data:/data/db # Persist MongoDB data
+    networks:
+      - oneconnect_network
     restart: always # Ensure MongoDB restarts on failure
   mongo-express:
     image: mongo-express:latest
@@ -58,6 +70,8 @@ services:
       - "8081:8081" 
     depends_on:
       - mongodb
+    networks:
+      - oneconnect_network
     restart: always
 volumes:
   mongo-data:
