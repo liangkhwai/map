@@ -12,6 +12,10 @@ services:
     environment:
       - NODE_ENV=production
       - MONGO_URI=mongodb://root:example@mongodb:27017/geo-map?authSource=admin
+      - FRONTEND_API=oneconnect
+      - CLERK_SECRET_PUBLIC_KEY=pk_test_bm9ibGUtdGVybWl0ZS02MC5jbGVyay5hY2NvdW50cy5kZXYk
+      - CLERK_SECRET_KEY=sk_test_Te3q0K3V4flEGecf2aKsBYCsHXBpo68P7zIHB4p5qr
+      - CLERK_SIGNING_SECRET=whsec_a3wjlPRJ65MCknlqk+1chwzvkMAWz+O8
     depends_on:
       - mongodb
     # volumes:
@@ -25,8 +29,9 @@ services:
       context: ./oneconnect # Point to the oneconnect directory
       dockerfile: Dockerfile
       args:
-        - VITE_CLERK_PUBLISHABLE_KEY=pk_test_Y29taWMtZm94LTExLmNsZXJrLmFjY291bnRzLmRldiQ
+        - VITE_CLERK_PUBLISHABLE_KEY=pk_test_bm9ibGUtdGVybWl0ZS02MC5jbGVyay5hY2NvdW50cy5kZXYk
         - VITE_API_BASE_URL=/api
+        - VITE_API_PUBLIC_URL = geo-map-api/public/uploads
     container_name: oneconnect
     ports:
       - "80:80"
